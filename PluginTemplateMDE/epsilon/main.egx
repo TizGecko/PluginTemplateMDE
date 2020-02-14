@@ -1,0 +1,14 @@
+pre {
+	"Running...".println();
+}
+
+/*
+
+	*** PUT YOUR MODEL RULES HERE ***
+
+*/
+
+
+post {
+	"Done.".println();
+}
