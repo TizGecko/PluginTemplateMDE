@@ -14,7 +14,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.epsilon.egl.engine;bundle-version="1.5.1",
  org.eclipse.epsilon.eol.engine;bundle-version="1.5.1",
  org.eclipse.epsilon.emc.emf;bundle-version="1.5.1",
- org.eclipse.core.resources;bundle-version="3.13.500"
+ org.eclipse.core.resources;bundle-version="3.13.500",
+ org.eclipse.epsilon.common.dt;bundle-version="1.5.1",
+ org.eclipse.epsilon.eol.dt;bundle-version="1.5.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: templatemde;
   uses:="org.osgi.framework,

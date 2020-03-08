@@ -15,12 +15,14 @@ import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.egl.EglFileGeneratingTemplateFactory;
 import org.eclipse.epsilon.egl.EgxModule;
 import org.eclipse.epsilon.emc.emf.EmfModel;
+import org.eclipse.epsilon.eol.dt.ExtensionPointToolNativeTypeDelegate;
 
 public class EpsilonMain {
 
 	private static final int ENGINE_INDEX = 0;
 	private static final int METAMODEL_INDEX = 1;
 	private static final int MODEL_INDEX = 2;
+	private static final int WORKDIR_INDEX = 3;
 
 	/**
 	 * Epsilon Module Entry Point
@@ -32,10 +34,15 @@ public class EpsilonMain {
 
 		EPackage.Registry.INSTANCE.put(test.TestPackage.eINSTANCE.getNsURI(), test.TestPackage.eINSTANCE);
 
-		// Parse main.egx
-		EgxModule module = new EgxModule(new EglFileGeneratingTemplateFactory());
 		if (hasArguments(args)) {
 			printInfo(args);
+			// Set working directory
+			EglFileGeneratingTemplateFactory factory = new EglFileGeneratingTemplateFactory();
+			factory.setOutputRoot(args[WORKDIR_INDEX]);
+
+			// Parse main.egx
+			EgxModule module = new EgxModule(factory);
+			module.getContext().getNativeTypeDelegates().add(new ExtensionPointToolNativeTypeDelegate());
 
 			module.parse(new File(args[ENGINE_INDEX]).getAbsoluteFile());
 
@@ -58,20 +65,20 @@ public class EpsilonMain {
 			// Make the document visible to the EGX program
 			module.getContext().getModelRepository().addModel(model);
 
+			// ... and execute
+			module.execute();
 		}
-
-		// ... and execute
-		module.execute();
 	}
 
 	private static boolean hasArguments(String[] args) {
-		return args.length >= 3;
+		return args.length >= 4;
 	}
 
 	private static void printInfo(String[] args) {
 		System.out.println("Engine: " + args[ENGINE_INDEX]);
 		System.out.println("Metamodel: " + args[METAMODEL_INDEX]);
 		System.out.println("Model: " + args[MODEL_INDEX]);
+		System.out.println("Working dir: " + args[WORKDIR_INDEX]);
 	}
 
 }
